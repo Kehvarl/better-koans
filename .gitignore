@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> e5f4724eff2205cc53cfef434b58b58e2f258d4a
 *.fasl
 *.dx32fsl
 *.dx64fsl
