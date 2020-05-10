@@ -17,14 +17,14 @@
   ;; created: a symbol that names a variable becomes bound to a value.
   (let ((x 10)
         (y 20))
-    (assert-equal (+ x y) ____)
+    (assert-equal (+ x y) 30)
     ;; It is possible to shadow previously visible bindings.
     (let ((y 30))
-      (assert-equal (+ x y) ____))
-    (assert-equal (+ x y) ____))
+      (assert-equal (+ x y) 40))
+    (assert-equal (+ x y) 30))
   ;; Variables bound by LET have a default value of NIL.
   (let (x)
-    (assert-equal x ____)))
+    (assert-equal x nil)))
 
 (define-test let-versus-let*
   ;; LET* is similar to LET, except the bindings are established sequentially,
@@ -33,30 +33,30 @@
         (y 20))
     (let ((x (+ y 100))
           (y (+ x 100)))
-      (assert-equal ____ x)
-      (assert-equal ____ y))
+      (assert-equal 120 x)
+      (assert-equal 110 y))
     (let* ((x (+ y 100))
            (y (+ x 100)))
       ;; Which X is used to compute the value of Y?
-      (assert-equal ____ x)
-      (assert-equal ____ y))))
+      (assert-equal 120 x)
+      (assert-equal 220 y))))
 
 (define-test let-it-be-equal
   ;; Fill in the LET and LET* to get the tests to pass.
   (let ((a 1)
         (b :two)
         (c "Three"))
-    (let ((____ ____)
-          (____ ____)
-          (____ ____))
+    (let ((a 100)
+          (b 200)
+          (c "Jellyfish"))
       (assert-equal a 100)
       (assert-equal b 200)
       (assert-equal c "Jellyfish"))
-    (let* ((____ ____)
-           (____ ____)
+    (let* ((a (+ a 120))
+           (b 200)
            ;; In this third binding, you are allowed to use the variables bound
            ;; by the previous two LET* bindings.
-           (____ ____))
+           (c (+ a (/ b a))))
       (assert-equal a 121)
       (assert-equal b 200)
       (assert-equal c (+ a (/ b a))))))
