@@ -49,8 +49,34 @@
 ;;;
 ;;; Your goal is to write the scoring function for Greed.
 
+(defun dice-to-hash (dice)
+  (let ((vals (make-hash-table)))
+    (dolist (d dice vals)
+            (unless (gethash d vals)
+              (setf (gethash d vals) 0))
+            (incf (gethash d vals))
+            )))
+
 (defun score (&rest dice)
-  ____)
+  (let ((dice-hash (dice-to-hash dice))
+        (score 0))
+    (loop for value being the hash-values of dice-hash
+      using (hash-key key)
+      do (cond
+           ((= 1 key)
+            (if (> value 2) (incf score 1000))
+            (if (> value 3) (incf score (* (-value 3) 100)))
+            (if (< value 3) (incf score (* value 100))))
+
+           ((= 5 key)
+            (if (> value 2) (incf score 500))
+            (if (> value 3) (incf score (* (- value 3) 50)))
+            (if (< value 3) (incf score (* value 50))))
+
+           (t
+            (if (> value 2) (incf score (* key 100))))
+           ))
+    score))
 
 (define-test score-of-an-empty-list-is-zero
   (assert-equal 0 (score)))
