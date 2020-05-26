@@ -14,7 +14,7 @@
 
 (define-condition triangle-error (error)
   ;; Fill in the blank with a suitable slot definition.
-  ((sides :initarg :sides :reader sides)))
+  ((triangle-error-sides :initarg :sides :reader triangle-error-sides)))
 
 (defun triangle (a b c)
   ;; Fill in the blank with a function that satisfies the below tests.
@@ -69,7 +69,7 @@
       (assert-true (subtypep '(real (0)) (type-error-expected-type condition))))
     (let ((condition (triangle-failure 1 1 3)))
       (assert-true (typep condition 'triangle-error))
-      (assert-equal '(1 1 3) (sides condition)))
+      (assert-equal '(1 1 3) (triangle-error-sides condition)))
     (let ((condition (triangle-failure 2 4 2)))
       (assert-true (typep condition 'triangle-error))
-      (assert-equal '(2 4 2) (sides condition)))))
+      (assert-equal '(2 4 2) (triangle-error-sides condition)))))
