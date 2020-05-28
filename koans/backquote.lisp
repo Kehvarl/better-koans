@@ -64,8 +64,8 @@
 
 (define-test splicing
   (let ((axis '(x y z)))
-    (assert-equal '(the axis are ____) `(the axis are ,axis))
-    (assert-equal '(the axis are ____) `(the axis are ,@axis)))
+    (assert-equal '(the axis are (x y z)) `(the axis are ,axis))
+    (assert-equal '(the axis are x y z) `(the axis are ,@axis)))
   (let ((coordinates '((43.15 77.6) (42.36 71.06))))
-    (assert-equal ____ `(the coordinates are ,coordinates))
-    (assert-equal ____ `(the coordinates are ,@coordinates))))
+    (assert-equal '(the coordinates are ((43.15 77.6) (42.36 71.06))) `(the coordinates are ,coordinates))
+    (assert-equal '(the coordinates are (43.15 77.6) (42.36 71.06)) `(the coordinates are ,@coordinates))))
