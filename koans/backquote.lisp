@@ -19,16 +19,16 @@
   (let ((x '(123))
         (z '(7 8 9)))
     ;; ' quotes an expression normally.
-    (assert-equal ____ '(x 45 6 z))
+    (assert-equal '(X 45 6 Z) '(x 45 6 z))
     ;; ` backquotes an expression; without any unquotes, it is equivalent to
     ;; using the normal quote.
-    (assert-equal ____ `(x 45 6 z))
+    (assert-equal '(X 45 6 Z) `(x 45 6 z))
     ;; , unquotes a part of the expression.
-    (assert-equal ____ `(,x 45 6 z))
-    (assert-equal ____ `(,x 45 6 ,z))
+    (assert-equal '((123) 45 6 Z) `(,x 45 6 z))
+    (assert-equal '((123) 45 6 (7 8 9)) `(,x 45 6 ,z))
     ;; ,@ splices an expression into the into the list surrounding it.
-    (assert-equal ____ `(,x 45 6 ,@z))
-    (assert-equal ____ `(,@x 45 6 ,@z))))
+    (assert-equal '((123) 45 6 7 8 9) `(,x 45 6 ,@z))
+    (assert-equal '(123 45 6 7 8 9) `(,@x 45 6 ,@z))))
 
 (define-test backquote-forms
   ;; Because of its properties, backquote is useful for constructing Lisp forms
