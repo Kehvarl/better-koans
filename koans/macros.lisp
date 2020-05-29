@@ -99,8 +99,8 @@
              (return-3 () (push 3 side-effects) 3))
         (for (i (return-0) (return-3))
           (push i result)))
-      (assert-equal ____ (nreverse result))
-      (assert-equal ____ (nreverse side-effects)))))
+      (assert-equal '(0 1 2 3) (nreverse result))
+      (assert-equal '(3 0) (nreverse side-effects)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
