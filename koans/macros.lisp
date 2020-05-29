@@ -108,7 +108,11 @@
   (macrolet ((for ((var start stop) &body body)
                ;; Fill in the blank with a correct FOR macroexpansion that is
                ;; not affected by the three macro pitfalls mentioned above.
-               ____))
+               (let ((limit (gensym "LIMIT")))
+                 `(do ((,var ,start (1+ ,var))
+                       (,limit ,stop))
+                      ((> ,var ,limit))
+                    ,@body))))
     (let ((side-effects '())
           (result '()))
       (flet ((return-0 () (push 0 side-effects) 0)
