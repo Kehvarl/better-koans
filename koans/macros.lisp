@@ -38,8 +38,7 @@
                   '(when (= 0 (random 6))
                             (when (= 0 (random 6))
                                      (when (= 0 (random 6))
-                                       (error "Bang!"))))
-                  ))
+                                       (error "Bang!"))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -55,8 +54,8 @@
           (result '()))
       (for (i 0 3)
            (push i result)
-           (assert-equal ____ limit))
-      (assert-equal ____ (nreverse result)))))
+           (assert-equal 3 limit))
+      (assert-equal '(0 1 2 3) (nreverse result)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
