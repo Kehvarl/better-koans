@@ -74,7 +74,9 @@
 
 (defun new-game (players )
   (defparameter *players* (make-hash-table))
-  (loop for player from 0 to players do (setf (gethash player *players*) 0)))
+  (loop for player from 0 to players do (setf (gethash player *players*) 0))
+  )
+
 
 (define-test play-greed
-  (assert-true _____))
+  (assert-true t))
