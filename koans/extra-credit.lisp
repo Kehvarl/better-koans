@@ -22,5 +22,59 @@
 ;;;
 ;;; This is a free form assignment, so approach it however you desire.
 
+(defclass dice-set ()
+  ;; Fill in the blank with a proper slot definition.
+  ((dice-value :initform '() :accessor dice-values)))
+
+(defmethod roll (count (object dice-set))
+  (check-type count (integer 1 *))
+  (setf (slot-value object 'dice-value) '())
+  (loop for die from 1 to count
+    do (setf (slot-value object 'dice-value) (cons (+ 1 (random 5)) (slot-value object 'dice-value))))
+  (slot-value object 'dice-value)
+  )
+
+(defun dice-to-hash (dice)
+  (let ((vals (make-hash-table)))
+    (dolist (d dice vals)
+            (unless (gethash d vals)
+              (setf (gethash d vals) 0))
+            (incf (gethash d vals))
+            )))
+
+(defun score (&rest dice)
+  (let ((dice-hash (dice-to-hash (car dice)))
+        (score 0))
+    (loop for value being the hash-values of dice-hash
+      using (hash-key key)
+      do (cond
+           ((= 1 key)
+            (if (> value 2) (incf score 1000))
+            (if (> value 3) (incf score (* (- value 3) 100)))
+            (if (< value 3) (incf score (* value 100))))
+
+           ((= 5 key)
+            (if (> value 2) (incf score 500))
+            (if (> value 3) (incf score (* (- value 3) 50)))
+            (if (< value 3) (incf score (* value 50))))
+
+           (t
+            (if (> value 2) (incf score (* key 100))))
+           ))
+    score))
+
+(defun greed-round (player)
+(let ((dice (make-instance 'dice-set)))
+  (let ((round (score (roll 5 dice))))
+    (format t "Player ~a.  Rolled ~a.   Score ~a" player (dice-values dice) round)
+    (if (or (gethash player *players*)
+            (>= 300 round))
+      (setf (gethash player *players*) (+ round (gethash player *players*)))
+      round))))
+
+(defun new-game (players )
+  (defparameter *players* (make-hash-table))
+  (loop for player from 0 to players do (setf (gethash player *players*) 0)))
+
 (define-test play-greed
-  (assert-true ____))
+  (assert-true _____))
