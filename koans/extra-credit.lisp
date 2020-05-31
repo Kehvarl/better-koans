@@ -63,19 +63,29 @@
            ))
     score))
 
-(defun greed-round (player)
-(let ((dice (make-instance 'dice-set)))
-  (let ((round (score (roll 5 dice))))
-    (format t "Player ~a.  Rolled ~a.   Score ~a" player (dice-values dice) round)
-    (if (or (gethash player *players*)
-            (>= 300 round))
-      (setf (gethash player *players*) (+ round (gethash player *players*)))
-      round))))
+(defun greed-player-turn (player)
+  (let ((dice (make-instance 'dice-set)))
+    (let ((round (score (roll 5 dice))))
+      (format t "~&Player ~a.  Rolled ~a.   Score ~a" player (dice-values dice) round)
+      round)))
 
-(defun new-game (players )
-  (defparameter *players* (make-hash-table))
-  (loop for player from 0 to players do (setf (gethash player *players*) 0))
-  )
+
+(defun greed-play-game (players)
+  (let ((player-scores (make-hash-table))
+        (player-turn 0)
+        (game-over nil))
+    (loop for player from 0 to players do (setf (gethash player player-scores) 0))
+    (loop while (null game-over)
+      do
+      (let ((score (greed-player-turn player-turn)))
+        (if (or (>= (gethash player-turn player-scores) 300)
+                (>= score 300))
+          (incf (gethash player-turn player-scores) score))
+        (format t " Score: ~a" (gethash player-turn player-scores))
+      (if (>= (gethash player-turn player-scores) 3000)
+        (setf game-over t))
+      (setf player-turn (mod (1+ player-turn) players))
+      ))))
 
 
 (define-test play-greed
