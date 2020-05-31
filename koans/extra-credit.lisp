@@ -69,10 +69,25 @@
       (format t "~&Player ~a.  Rolled ~a.   Score ~a" player (dice-values dice) round)
       round)))
 
+(defun hash-maxkey-and-value(h1)
+  (let  (maxkey maxvalue)
+    (maphash (lambda(k v)
+                    (cond ((not maxvalue)
+                           (setq maxvalue v maxkey k))
+                      ((> v maxvalue)
+                       (setf maxvalue v maxkey k))))
+             h1)
+    (list maxkey maxvalue)))
+
+(defun greed-winner (players)
+  (let ((winner (hash-maxkey-and-value players)))
+   (format t "~&WINNER!  Player ~a with ~a points" (car winner) (cdr winner))))
+
 
 (defun greed-play-game (players)
   (let ((player-scores (make-hash-table))
         (player-turn 0)
+        (end-turn nil)
         (game-over nil))
     (loop for player from 0 to players do (setf (gethash player player-scores) 0))
     (loop while (null game-over)
@@ -82,10 +97,14 @@
                 (>= score 300))
           (incf (gethash player-turn player-scores) score))
         (format t " Score: ~a" (gethash player-turn player-scores))
-      (if (>= (gethash player-turn player-scores) 3000)
-        (setf game-over t))
-      (setf player-turn (mod (1+ player-turn) players))
-      ))))
+        (if (>= (gethash player-turn player-scores) 3000)
+          (setf end-turn player-turn))
+        (setf player-turn (mod (1+ player-turn) players))
+        (if (and (not (null end-turn))
+                 (= end-turn player-turn))
+          (setf game-over t))
+        ))
+    (greed-winner player-scores)))
 
 
 (define-test play-greed
